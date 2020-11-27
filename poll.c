@@ -42,13 +42,14 @@ int main (int argc, char** argv) {
     assert(buf);
 
     while ((resop = poll(pollfds, nfds, -1) != 0)) {
-
         for (int i = 0; i < nfds; ++i) {
-            int nread = read(fds[i], buf, MAX_SIZE);
-            if (nread == -1) {
-                perror("Error reading from fds: ");
-            }
-            if (nread != 0) { // do not write several times data from single fd
+            if (pollfds[i].revents == POLLIN) {
+
+                int nread = read(fds[i], buf, MAX_SIZE);
+                if (nread == -1) {
+                    perror("Error reading from fds: ");
+                }
+                //if (nread != 0) { // do not write several times data from single fd
                 int nwrite = write(STDOUT_FILENO, buf, MAX_SIZE);
                 if (nwrite == -1) {
                     perror("Error writing to stdout: ");
