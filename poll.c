@@ -24,7 +24,7 @@ int main (int argc, char** argv) {
     assert(fds);
 
     for (int i = 1; i < argc; ++i) {
-        fds[i - 1] = open(argv[i], O_NONBLOCK);
+        fds[i - 1] = open(argv[i], O_NONBLOCK | O_RDONLY);
         if (fds[i - 1] < 0) {
             perror("Error opening descriptor: ");
         }
